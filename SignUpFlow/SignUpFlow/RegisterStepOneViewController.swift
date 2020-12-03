@@ -9,7 +9,13 @@ import UIKit
 
 class RegisterStepOneViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
-    let profileImagePicker = UIImagePickerController()
+    lazy var imagePicker: UIImagePickerController = {
+        let profileImagePicker: UIImagePickerController = UIImagePickerController()
+        profileImagePicker.delegate = self
+        profileImagePicker.sourceType = .photoLibrary
+        return profileImagePicker
+    }()
+    
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var idTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
