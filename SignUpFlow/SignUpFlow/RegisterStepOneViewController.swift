@@ -13,6 +13,7 @@ class RegisterStepOneViewController: UIViewController, UIImagePickerControllerDe
         let profileImagePicker: UIImagePickerController = UIImagePickerController()
         profileImagePicker.delegate = self
         profileImagePicker.sourceType = .photoLibrary
+        profileImagePicker.allowsEditing = true
         return profileImagePicker
     }()
     
@@ -34,6 +35,16 @@ class RegisterStepOneViewController: UIViewController, UIImagePickerControllerDe
     
     @objc func loadImageFromLibrary(tapGestureRecognizer: UITapGestureRecognizer) {
         self.present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let editedImage: UIImage = info[.editedImage] as? UIImage {
+            self.profileImageView.image = editedImage
+        }
     }
     
 }
