@@ -26,5 +26,14 @@ class RegisterStepOneViewController: UIViewController, UIImagePickerControllerDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(loadImageFromLibrary(tapGestureRecognizer:)))
+        profileImageView.addGestureRecognizer(tapGestureRecognizer)
+        profileImageView.isUserInteractionEnabled = true
     }
+    
+    @objc func loadImageFromLibrary(tapGestureRecognizer: UITapGestureRecognizer) {
+        self.present(imagePicker, animated: true, completion: nil)
+    }
+    
 }
