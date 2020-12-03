@@ -45,6 +45,7 @@ class RegisterStepOneViewController: UIViewController, UIImagePickerControllerDe
         if let editedImage: UIImage = info[.editedImage] as? UIImage {
             self.profileImageView.image = editedImage
         }
+        self.dismiss(animated: true, completion: nil)
     }
     
 }
