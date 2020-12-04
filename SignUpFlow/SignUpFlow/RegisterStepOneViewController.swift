@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RegisterStepOneViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+class RegisterStepOneViewController: UIViewController,UITextViewDelegate {
     
     lazy var imagePicker: UIImagePickerController = {
         let profileImagePicker: UIImagePickerController = UIImagePickerController()
@@ -28,11 +28,39 @@ class RegisterStepOneViewController: UIViewController, UIImagePickerControllerDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        idTextField.delegate = self
+        passwordTextField.delegate = self
+        checkPasswordTextField.delegate = self
+        introductionTextView.delegate = self
+        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(loadImageFromLibrary(tapGestureRecognizer:)))
         profileImageView.addGestureRecognizer(tapGestureRecognizer)
         profileImageView.isUserInteractionEnabled = true
+        
     }
-    
+
+}
+
+
+//MARK: - UITextFieldDelegate
+extension RegisterStepOneViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        switch textField {
+        case idTextField:
+            passwordTextField.becomeFirstResponder()
+        case passwordTextField:
+            checkPasswordTextField.becomeFirstResponder()
+        case checkPasswordTextField:
+            introductionTextView.becomeFirstResponder()
+        default:
+            break
+        }
+        return true
+    }
+}
+
+//MARK: - UIImagePickerControllerDelegate & UINavigationControllerDelegate
+extension RegisterStepOneViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     @objc func loadImageFromLibrary(tapGestureRecognizer: UITapGestureRecognizer) {
         self.present(imagePicker, animated: true, completion: nil)
     }
@@ -45,7 +73,6 @@ class RegisterStepOneViewController: UIViewController, UIImagePickerControllerDe
         if let editedImage: UIImage = info[.editedImage] as? UIImage {
             self.profileImageView.image = editedImage
         }
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
-    
 }
