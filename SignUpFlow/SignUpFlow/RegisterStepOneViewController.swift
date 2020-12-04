@@ -38,7 +38,10 @@ class RegisterStepOneViewController: UIViewController,UITextViewDelegate {
         profileImageView.isUserInteractionEnabled = true
         
     }
-
+    
+    @IBAction func tapGesture(_ sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
+    }
 }
 
 
