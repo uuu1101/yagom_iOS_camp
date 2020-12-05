@@ -6,3 +6,10 @@
 //
 
 import UIKit
+
+class RegisterStepTwoViewController: UIViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+}
