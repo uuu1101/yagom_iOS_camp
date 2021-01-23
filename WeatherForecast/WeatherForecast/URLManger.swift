@@ -26,7 +26,7 @@ class URLManager {
         }
     }
     
-    func MakeURL(mode: Mode, latitude: Double, lontitude: Double) -> URL? {
+    func makeURL(mode: Mode, latitude: Double, lontitude: Double) -> URL? {
         let units = URLQueryItem(name: "units", value: "metric")
         let myKey = URLQueryItem(name: "appid", value: "bdc8daed0ec51c18dfc0d8b9c84bb17c")
         let latitude = URLQueryItem(name: "lat", value: String(latitude))
