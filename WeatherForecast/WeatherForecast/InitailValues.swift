@@ -7,9 +7,11 @@
 
 import Foundation
 
-enum InitialValue {
-    static let latitude = 0.0
-    static let longitude = 0.0
-    static let emptyString = ""
-    static let localIdentifier = "Ko-kr"
+extension Double {
+    static var zero: Double { 0.0 }
+}
+
+extension String {
+    static var empty: String { "" }
+    static var localIdentufier: String { "Ko-kr" }
 }

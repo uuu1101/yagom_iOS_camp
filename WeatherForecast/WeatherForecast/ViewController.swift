@@ -12,9 +12,9 @@ final class ViewController: UIViewController, CLLocationManagerDelegate {
     private var currentWeather: CurrentWeather?
     private var forecastFiveDays: ForecastFiveDays?
     private var locationManager: CLLocationManager!
-    private var currentAddress: String = InitialValue.emptyString
-    private var latitude: Double = InitialValue.latitude
-    private var longitude: Double = InitialValue.longitude
+    private var currentAddress: String = String.empty
+    private var latitude: Double = .zero
+    private var longitude: Double = .zero
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +32,7 @@ final class ViewController: UIViewController, CLLocationManagerDelegate {
     
     private func decodeCurrentWeaterFromAPI(latitude: Double, longitude: Double) {
         let session = URLSession(configuration: .default)
-        guard let url:URL = URLManager.common.MakeURL(mode: .currentWeather, latitude: latitude, lontitude: longitude) else {
+        guard let url:URL = URLManager.common.makeURL(mode: .currentWeather, latitude: latitude, lontitude: longitude) else {
             return
         }
         let dataTask = session.dataTask(with: url) { data,_,error  in
@@ -50,7 +50,7 @@ final class ViewController: UIViewController, CLLocationManagerDelegate {
 
     private func decodeForecastFiveDaysFromAPI(latitude: Double, longitude: Double) {
         let session = URLSession(configuration: .default)
-        guard let url:URL = URLManager.common.MakeURL(mode: .forecastFiveDays, latitude: latitude, lontitude: longitude) else {
+        guard let url:URL = URLManager.common.makeURL(mode: .forecastFiveDays, latitude: latitude, lontitude: longitude) else {
             return
         }
         let dataTask = session.dataTask(with: url) { data,_,error  in
@@ -67,7 +67,7 @@ final class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func printCurrentWeather() {
-        dump(currentWeather)
+        dump (currentWeather!)
     }
     
     @IBAction func printForecastFiveDays() {
@@ -95,7 +95,7 @@ final class ViewController: UIViewController, CLLocationManagerDelegate {
     func convertToAddress(latitude: Double, longitude: Double) {
         let geoCoder: CLGeocoder = CLGeocoder()
         let coordinate: CLLocation = CLLocation(latitude: latitude, longitude: longitude)
-        let local: Locale = Locale(identifier: InitialValue.localIdentifier)
+        let local: Locale = Locale(identifier: String.localIdentufier)
         geoCoder.reverseGeocodeLocation(coordinate, preferredLocale: local) { place, _ in
             guard let address: [CLPlacemark] = place, let state = address.last?.administrativeArea, let city = address.first?.locality, let township = address.first?.subLocality else {
                 return
