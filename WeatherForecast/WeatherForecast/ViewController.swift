@@ -27,11 +27,10 @@ final class ViewController: UIViewController {
     }
     
     private func decodeCurrentWeaterFromAPI(latitude: Double, longitude: Double) {
-        let session = URLSession(configuration: .default)
         guard let url:URL = URLManager.common.makeURL(mode: .currentWeather, latitude: latitude, lontitude: longitude) else {
             return
         }
-        let dataTask = session.dataTask(with: url) { data,_,error  in
+        URLSession.shared.dataTask(with: url) { data,_,error  in
             guard let data = data else {
                 return
             }
@@ -41,15 +40,14 @@ final class ViewController: UIViewController {
                 print(error.localizedDescription)
             }
         }
-        dataTask.resume()
+        .resume()
     }
     
     private func decodeForecastFiveDaysFromAPI(latitude: Double, longitude: Double) {
-        let session = URLSession(configuration: .default)
         guard let url:URL = URLManager.common.makeURL(mode: .forecastFiveDays, latitude: latitude, lontitude: longitude) else {
             return
         }
-        let dataTask = session.dataTask(with: url) { data,_,error  in
+        URLSession.shared.dataTask(with: url) { data,_,error  in
             guard let data = data else {
                 return
             }
@@ -59,7 +57,7 @@ final class ViewController: UIViewController {
                 print(error.localizedDescription)
             }
         }
-        dataTask.resume()
+        .resume()
     }
     
     @IBAction func printCurrentWeather() {
