@@ -7,22 +7,18 @@
 import UIKit
 import CoreLocation
 
-final class ViewController: UIViewController, CLLocationManagerDelegate {
+final class ViewController: UIViewController {
     
     private var currentWeather: CurrentWeather?
     private var forecastFiveDays: ForecastFiveDays?
-    private var locationManager: CLLocationManager!
+    private var locationManager = CLLocationManager()
     private var currentAddress: String = String.empty
     private var latitude: Double = .zero
     private var longitude: Double = .zero
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.requestLocation()
+        setUPLocationManager()
     }
     
     private func setUpAPI(latitude: Double, longitude: Double) {
@@ -47,7 +43,7 @@ final class ViewController: UIViewController, CLLocationManagerDelegate {
         }
         dataTask.resume()
     }
-
+    
     private func decodeForecastFiveDaysFromAPI(latitude: Double, longitude: Double) {
         let session = URLSession(configuration: .default)
         guard let url:URL = URLManager.common.makeURL(mode: .forecastFiveDays, latitude: latitude, lontitude: longitude) else {
@@ -67,7 +63,7 @@ final class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func printCurrentWeather() {
-        dump (currentWeather!)
+        dump (currentWeather)
     }
     
     @IBAction func printForecastFiveDays() {
@@ -76,6 +72,26 @@ final class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBAction func printCurrentAddress() {
         print(currentAddress)
+    }
+    
+    func convertToAddress(latitude: Double, longitude: Double) {
+        let geoCoder: CLGeocoder = CLGeocoder()
+        let coordinate: CLLocation = CLLocation(latitude: latitude, longitude: longitude)
+        let local: Locale = Locale(identifier: String.localIdentufier)
+        geoCoder.reverseGeocodeLocation(coordinate, preferredLocale: local) { place, _ in
+            guard let address: [CLPlacemark] = place, let state = address.last?.administrativeArea, let city = address.first?.locality, let township = address.first?.subLocality else {
+                return
+            }
+            self.currentAddress = "\(state) \(city) \(township)"
+        }
+    }
+}
+
+extension ViewController: CLLocationManagerDelegate {
+    func setUPLocationManager () {
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -90,17 +106,5 @@ final class ViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error.localizedDescription)
-    }
-    
-    func convertToAddress(latitude: Double, longitude: Double) {
-        let geoCoder: CLGeocoder = CLGeocoder()
-        let coordinate: CLLocation = CLLocation(latitude: latitude, longitude: longitude)
-        let local: Locale = Locale(identifier: String.localIdentufier)
-        geoCoder.reverseGeocodeLocation(coordinate, preferredLocale: local) { place, _ in
-            guard let address: [CLPlacemark] = place, let state = address.last?.administrativeArea, let city = address.first?.locality, let township = address.first?.subLocality else {
-                return
-            }
-            self.currentAddress = "\(state) \(city) \(township)"
-        }
     }
 }
