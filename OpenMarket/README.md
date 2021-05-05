@@ -38,11 +38,10 @@ chore: 기타업무
 ```
 
 ## 기능
+
  1. 앱 실행시 전체 상품 목록을 조회
  2. 상단 `UISegmentControl`를 사용, `List`와 `Grid`를 선택하여 `TableView`, `CollectionView` 로 사용자에게 UI 제공
- 3. 제품을 탭하면 상세내용을 보여줌
- 4. 상품 등록 기능
- 5. 상품 등록시 정가와 할인된 가격을 따로 입력받아 UI에 표시
+ 3. 상품의 정가와 할인된 가격을 따로 입력받아 UI에 표시
 
 ## Trouble Shooting
 
