@@ -40,7 +40,8 @@ chore: 기타업무
 
 ## 기능
 
-![OpenMarket](https://user-images.githubusercontent.com/49808034/117233226-aa764000-ae5d-11eb-9168-06a8e499a4d7.gif)
+![OpenMarket_2](https://user-images.githubusercontent.com/49808034/117234273-a519f500-ae5f-11eb-966d-4cbd8136d3fa.gif)
+
  1. 앱 실행시 전체 상품 목록을 조회
  2. 상단 `UISegmentControl`를 사용, `List`와 `Grid`를 선택하여 `TableView`, `CollectionView` 로 사용자에게 UI 제공
  3. 상품의 정가와 할인된 가격을 따로 입력받아 UI에 표시
