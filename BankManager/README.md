@@ -13,7 +13,7 @@
 
 - 👦 👦 팀원 : [글렌](https://github.com/innieminnie), [태태](https://github.com/uuu1101)  
 
-- 📅 기간 : 2021/01/04 ~ 2021/01/17(2w)
+- 📅 기간 : 2021.01.04 ~ 2021.01.17 2주간
 
 - [프로젝트 룰](https://github.com/uuu1101/yagom_iOS_camp/blob/main/BankManager/ProjectRule.md)
 
