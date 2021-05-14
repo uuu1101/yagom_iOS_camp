@@ -16,7 +16,6 @@
 - 📅 기간 : 2021.01.04 ~ 2021.01.17 2주간
 
 - [프로젝트 룰](https://github.com/uuu1101/yagom_iOS_camp/blob/main/BankManager/ProjectRule.md)
-
 ## 기능
 
 <img width="250" src="https://user-images.githubusercontent.com/49808034/117962192-ea578e80-b359-11eb-87bc-33537987fa2f.gif">
@@ -24,7 +23,9 @@
 > 각 고객의 등급과 업무는 랜덤이며, 업무별 소요 시간이 다름
 
 ## Trouble Shooting
-
+왜 비동기 프로그래밍이 필요하였나?
+DispatchQueue와 OperationQueue 중 DispatchQueue를 사용한 이유?
+DispatchGroup 과 Semaphore 중 DispatchGruop을 사용한 이유?
 
 ## 학습 내용
 - 비동기 프로그래밍
