@@ -48,6 +48,21 @@ chore: 기타업무
 ## Trouble Shooting
 - 패스워드 컨테이너의 역할과 필요성? 
 - 특정기기에서 컬렉션 뷰의 가격을 표시하는 Text가 셀을 벗어나는 문제
+> 해당 문제는 오토레이아웃 제약조건을 설정하지 않아서 발생하였습니다. 
+따라서 문제가 발생한 Label에 제약조건을 추가하여 해결하였습니다.
+```swift
+//추가한 코드내용   
+productPriceLabel.leadingAnchor.constraint(equalTo: productThumbnailImageView.leadingAnchor),
+productPriceLabel.trailingAnchor.constraint(equalTo: productThumbnailImageView.trailingAnchor),
+
+productNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
+productNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
+
+productStockLabel.leadingAnchor.constraint(equalTo: productNameLabel.leadingAnchor),
+productStockLabel.trailingAnchor.constraint(equalTo: productNameLabel.trailingAnchor),
+```
+
+[해당 PR 링크](https://github.com/yagom-academy/ios-open-market/pull/13#discussion_r570717025)
 - 테이블뷰에서 상품의 각각 이미지가 크기가 다르게 표시되는 문제 
 
 ## 학습 내용
