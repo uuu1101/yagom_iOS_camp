@@ -33,6 +33,10 @@
 OperationQueue 의 경우에는 동시에 실행되는 Task의 수를 지정하거나 Task의 일시정지, 취소를 할 수 있는 기능이 있습니다.  
 하지만 본 프로젝트에서는 OperationQueue의 기능을 사용하는 경우가 없다고 판단하였습니다.
 
+![스크린샷 2021-05-17 오후 3 39 04](https://user-images.githubusercontent.com/49808034/118442786-04acb600-b726-11eb-8b4c-459be019261f.png)
+
+> 참고) [인프런 강의 앨런님](https://www.inflearn.com/course/iOS-Concurrency-GCD-Operation#)
+
 ### DispatchGroup 과 Semaphore 중 DispatchGruop을 사용한 이유?  
 
 ### Thread의 sleep 대신 usleep을 사용했을 때의 이점이 있었나요?
