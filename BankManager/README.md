@@ -60,7 +60,6 @@ Thread.sleep은 Foundation Framework의 메서드(Thread 클래스의 클래스 
 ```swift
 
 open class func sleep(forTimeInterval ti: TimeInterval)
-![Uploading 스크린샷 2021-05-17 오후 11.42.51.png…]()
 
 public func usleep(_: useconds_t) -> Int32
 
