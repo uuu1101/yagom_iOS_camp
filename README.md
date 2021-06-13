@@ -124,4 +124,24 @@
 
 ## 여덟번째 프로젝트 - 날씨정보  
 
-## 아홉번째 프로젝트 - 오픈 마켓
+## 아홉번째 프로젝트 - 오픈 마켓  
+🗓 기간 : 2021/01/25 ~ 2021/02/07  
+
+✏️ 설명 :  서버와 통신하여 물품리스트를 테이블뷰와 그리드뷰로 보여주며 상품 등록을 할 수 있는 오픈마켓 앱    
+
+🔍 기능  
+
+<img width="250" src="https://user-images.githubusercontent.com/49808034/117234273-a519f500-ae5f-11eb-966d-4cbd8136d3fa.gif">  
+
+ > - 앱 실행시 전체 상품 목록을 조회  
+ > - 상단 `UISegmentControl`를 사용, `List`와 `Grid`를 선택하여 `TableView`, `CollectionView` 로 사용자에게 UI 제공  
+ > - 상품의 정가와 할인된 가격을 따로 입력받아 UI에 표시  
+
+📚 세부사항  
+
+- HTTP 서버와 통신할 수 있는 모델 구현(CURD) - multipart/form-data  
+- mock 데이터와, mockURLSession을 이용하여 서버가 없는 상태에서도 테스트할 수 있도록 Unit Test 구현  
+- 상품 목록을 Segmented Control을 활용해, 테이블뷰와 컬렌션뷰로 구현  
+- 코드만을 사용하여 UI 구현  
+- Completion Handler 사용  
+- 
