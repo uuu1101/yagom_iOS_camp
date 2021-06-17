@@ -1,4 +1,4 @@
-## Yagom iOS 커리어 스타터 캠프
+# Yagom iOS 커리어 스타터 캠프
 
 2020년 11월부터 2021년 04월, 총 6개월간 진행한 프로젝트들을 정리한 Respository 입니다.
 
@@ -26,9 +26,9 @@
 
 열번째 프로젝트 - 메모장  
 
-열한번째 프로젝트 - 프로젝트 매니저 서버  
+[열한번째 프로젝트 - 프로젝트 매니저 서버](#열한번째-프로젝트---프로젝트-매니저-서버)    
 
-열두번째 프로젝트 - 프로젝트 매니저 어플리케이션  
+[열두번째 프로젝트 - 프로젝트 매니저 애플리케이션](#열두번째-프로젝트---프로젝트-매니저-애플리케이션)
 
 ---  
 
@@ -73,6 +73,7 @@
 - Alert를 통한 알림창 구현
 - 싱글턴 패턴 사용
 
+
 ## 네번째 프로젝트 - 회원가입
 🗓 기간: 2020.11.30 ~ 2020.12.06
 
@@ -83,6 +84,7 @@
 ![회원가입화면](https://user-images.githubusercontent.com/49808034/121138797-04aa5c80-c873-11eb-8d02-3d374c057333.gif)  
 
 📚 세부사항  
+
 
 ## 다섯번째 프로젝트 - 계산기
 🗓 기간: 2020.12.07 ~ 2020.12.20  
@@ -97,6 +99,7 @@
 
 📚 세부사항
 
+
 ## 여섯번째 프로젝트 - 만국박람회
 🗓 기간: 2020.12.21 ~ 2020.12.27  
 
@@ -107,6 +110,7 @@
 ![만국박람회](https://user-images.githubusercontent.com/49808034/121473080-1455ac80-c9fd-11eb-83ae-02fec26a3c98.gif)
   
 📚 세부사항
+
 
 ## 일곱번째 프로젝트 - 은행 매니저  
 🗓 기간 : 2021.01.04 ~ 2021.01.17  
@@ -123,6 +127,7 @@
 - DispatchGroup과 DispatchSemaphore 사용  
 
 ## 여덟번째 프로젝트 - 날씨정보  
+
 
 ## 아홉번째 프로젝트 - 오픈 마켓  
 🗓 기간 : 2021/01/25 ~ 2021/02/07  
@@ -144,4 +149,141 @@
 - 상품 목록을 Segmented Control을 활용해, 테이블뷰와 컬렌션뷰로 구현  
 - 코드만을 사용하여 UI 구현  
 - Completion Handler 사용  
-- 
+
+
+## 열한번째 프로젝트 - 프로젝트 매니저 서버
+🗓 기간 : 2021/03/08 ~ 2021/03/28  
+
+✏️ 설명 :  할 일 칸반보드 정보를 담고 있는 서버를 구현 (RESTful)
+
+### API Document
+
+### GET - 할일 목록 조회
+
+- `Path`: /todoList
+- `HTTP Status Code`
+    - Success: 200
+    - Error: 400, 404, 500
+
+| Response Body                   ||
+| ------------ | ----------------- |
+| === JSON Object ===            ||
+| todoList     | Object Array      |
+| === JSON Object ===            ||
+| id           | Int               |
+| title        | String            |
+| description  | String (Optional) |
+| deadline     | Date (Optional)   |
+| status       | Int               |
+| status_index | Int               |
+
+### Success data sample
+
+~~~swift
+{
+    "todoList": [
+        {
+            "id": 1,
+            "title": "태태의 볼펜 똥 채우기",
+            "description": "볼펜 똥이 다 떨어져서 볼펜 똥을 오픈마켓에서 사오자",
+            "deadline": 20210310,
+            "status": 0,
+            "statusIndex": 0
+        },
+        {
+            "id": 2,
+            "title": "오동나무 물주기",
+            "description": "오동나무 물은 일주일에 3번씩 화요일날 주어야한다!",
+            "deadline": 20210316,
+            "status": 1,
+            "statusIndex": 0
+        },
+        {
+            "id": 3,
+            "title": "라자냐 먹기",
+            "description": "오늘 저녁은 라자냐를 먹어야겠다,,",
+            "deadline": 20210309,
+            "status": 2,
+            "statusIndex": 0
+        }
+    ]
+}
+~~~
+
+### Error data sample
+
+~~~swift
+{
+  "error": true
+}
+~~~
+
+
+### POST - 할일 등록
+
+- `Path`: /todo
+- `HTTP Status Code`
+    - Success: 201
+    - Error: 400, 404, 500
+
+| Request Body                    || | Response Body                   ||
+| -----------  | ----------------- |-| ------------ | ----------------- |
+| === JSON Object ===             || | === JSON Object ===             ||
+| -            | -                 | | id           | Int               |
+| title        | String            | | title        | String            |
+| description  | String (Optional) | | description  | String (Optional) |
+| deadline     | Date (Optional)   | | deadline     | Date (Optional)   |
+| status       | Int               | | status       | Int               |
+| status_index | Int               | | status_index | Int               |
+
+### PATCH - 할일 수정
+
+- `Path`: /todo/:id
+- `HTTP Status Code`
+    - Success: 200
+    - Error: 400, 404, 500
+
+| Request Body                    || | Response Body                   ||
+| -----------  | ----------------- |-| ------------ | ----------------- |
+| === JSON Object  ===            || | === JSON Object  ===            ||
+| id           | Int               | | id           | Int               |
+| title        | String (Optional) | | title        | String            |
+| description  | String (Optional) | | description  | String (Optional) |
+| deadline     | Date (Optional)   | | deadline     | Date (Optional)   |
+| status       | Int (Optional)    | | status       | Int               |
+| status_index | Int (Optional)    | | status_index | Int               |
+
+### DELETE - 할일 삭제
+
+- `Path`: /todo/:id
+- `HTTP Status Code`
+    - Success: 200
+    - Error: 400, 404, 500
+
+| Response Body                   ||
+| ------------ | ----------------- |
+| === JSON Object  ===            ||
+| id           | Int               |
+| title        | String            |
+| description  | String (Optional) |
+| deadline     | Date (Optional)   |
+| status       | Int               |
+| status_index | Int               |
+
+
+## 열두번째 프로젝트 - 프로젝트 매니저 애플리케이션
+🗓 기간 : 2021/03/29 ~ 2021/04/18  
+
+✏️ 설명 :  할 일, 진행중인 일, 완료된 일로 나누어진 칸반보드 앱  
+
+🔍 기능   
+- 할 일 생성  
+![프로젝트 매니저 앱 1](https://user-images.githubusercontent.com/49808034/122342164-3d3aec00-cf7f-11eb-8d29-37dd7b59c306.gif)
+- 할 일 수정  
+![프로젝트 매니저 앱 3](https://user-images.githubusercontent.com/49808034/122342758-ee418680-cf7f-11eb-9566-41b0a24863cd.gif)  
+- 할 일 이동  
+![프로젝트 매니저 앱 2](https://user-images.githubusercontent.com/49808034/122342507-ade20880-cf7f-11eb-80f1-75227b62d264.gif)
+- 할 일 삭제  
+![프로젝트 매니저 앱 4](https://user-images.githubusercontent.com/49808034/122343039-3eb8e400-cf80-11eb-9a7e-63c3472c3e98.gif)
+
+📚 세부사항  
