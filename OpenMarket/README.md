@@ -45,6 +45,75 @@ chore: 기타업무
  2. 상단 `UISegmentControl`를 사용, `List`와 `Grid`를 선택하여 `TableView`, `CollectionView` 로 사용자에게 UI 제공
  3. 상품의 정가와 할인된 가격을 따로 입력받아 UI에 표시
 
+## 주요 구현 사항 
+## 1) 네트워크 통신을 위한 모델 타입 구현
+
+<b>Model 디렉토리</b> 
+| 타입명 | 요약 |
+| :-: | :-: |
+| Product | 상품정보 |
+| ProductList | 페이지에 따른 20개의 Product 리스트 |
+| ProductRegistration | 상품 등록 시 필요한 입력 정보 |
+ 
+```swift
+struct Product: Codable {
+  let id: Int
+  let title: String
+  let descriptions: String
+  let price: Int
+  let currency: String
+  let stock: Int
+  let discountedPrice: Int?
+  let thumbnails: [String]
+  let images: [Data]
+  let registrationDate: Double
+  let password: String
+  
+  private enum CodingKeys: String, CodingKey {
+    case id
+    case title
+    case descriptions
+    case price
+    case currency
+    case stock
+    case discountedPrice = "discounted_price"
+    case thumbnails
+    case images
+    case registrationDate = "registration_date"
+    case password
+  }
+}
+```
+```swift
+struct ProductList: Decodable {
+  let page: Int
+  let items: [Product]
+}
+```
+```swift
+struct ProductRegistration: Encodable {
+  let title: String
+  let descriptions: String
+  let price: Int
+  let currency: String
+  let stock: Int
+  let discountedPrice: Int?
+  let images: [Data]
+  let password: String
+  
+  var description: [String: Any?] {[
+      "title": title,
+      "descriptions": descriptions,
+      "price": price,
+      "currency": currency,
+      "stock": stock,
+      "discountedPrice": discountedPrice,
+      "images": images,
+      "password": password
+  ]}
+}
+
+```
 ## Trouble Shooting
 - 패스워드 컨테이너의 역할과 필요성? 
 - 특정기기에서 컬렉션 뷰의 가격을 표시하는 Text가 셀을 벗어나는 문제 [[해당 PR 링크]](https://github.com/yagom-academy/ios-open-market/pull/13#discussion_r570717025)
