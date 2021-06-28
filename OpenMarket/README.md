@@ -46,9 +46,9 @@ chore: 기타업무
  3. 상품의 정가와 할인된 가격을 따로 입력받아 UI에 표시
 
 ## 주요 구현 사항 
-## 1) 네트워크 통신을 위한 모델 타입 구현
+### 1) 네트워크 통신을 위한 모델 타입 구현
 
-<b>Model 디렉토리</b> 
+[Model 디렉토리](https://github.com/uuu1101/yagom_iOS_camp/tree/main/OpenMarket/OpenMarket/Model)
 | 타입명 | 요약 |
 | :-: | :-: |
 | Product | 상품정보 |
