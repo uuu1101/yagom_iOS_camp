@@ -102,6 +102,37 @@ OperationQueue 의 경우에는 동시에 실행되는 Task의 수를 지정하�
 
 > 참고) [인프런 강의 앨런님](https://www.inflearn.com/course/iOS-Concurrency-GCD-Operation#)
 
+### - 은행원의 업무가 모두 완료되지 않았음에도 업무완료 메세지, 초기 메세지를 출력하는 현상
+
+```swift
+// BankManager.swift 
+   mutating private func distributeCustomer() {
+        var isContinue = true
+        let group = DispatchGroup()
+        
+        while isContinue {
+            for bankclerk in bankclerks {
+                if bankclerk.isWorking == false {
+                    if customerList.count == 0 {
+                        isContinue = false
+                        break
+                    }
+                    let customer = customerList.removeFirst()
+                    bankclerk.serveCustomers(customer: customer, group: group)
+                    self.numberOfCustomer += 1
+                }
+            }
+        }
+        group.wait()
+    }
+```
+위 코드에서 group.wait() 부분이 없다면 해당 스레드의 작업이 끝나길 기다리지 않고, 메서드가 끝이 납니다.   
+그 후에 로직상 메세지를 출력하는 메서드를 호출하게 되어 아래와 같이 은행이 업무 마감문구를 먼저 출력하게 됩니다.  
+
+![스크린샷 2021-06-28 오후 5 53 55](https://user-images.githubusercontent.com/49808034/123608565-d1d40280-d839-11eb-9fb8-c28355ab76fb.png)
+
+
+
 ### - DispatchGroup 과 Semaphore 중 DispatchGruop을 사용한 이유?  
 
 **DispatchGroup** 은 디스패치 큐에 추가된 작업을 가상의 그룹으로 관리합니다. 서로 다른 디스패치 큐에 추가된 작업을 동일한 그룹에 추가하는 것도 가능합니다. **여러 작업을 하나의 작업으로 묶는 것**이라고 생각하면 편합니다. 그러므로 그룹에 포함된 모든 작업이 완료되어야 그룹이 완료됩니다.  
@@ -111,6 +142,24 @@ OperationQueue 의 경우에는 동시에 실행되는 Task의 수를 지정하�
 위 두 가지 개념을 보았을 때 다수의 작업이 하나의 리소스에 접근하는 방식보다는 여러 작업을 하나의 작업으로 묶는 것이 적합하다고 생각하였습니다.  
 그 이유는 **여러가지 일이 은행원에게 접근하는 것이 아니라** 고객이 필요로하는 업무가 대출인지 예금인지에 대한 구분하는 등 여러가지 일들을 은행원 한명이 하고 있다고 생각하여 **여러 작업을 하나의 작업으로 묶어 표현하는게 더 자연스러워보여 DispatchGroup을 채택**하였습니다.
 
+```swift
+// BankClerk.swift 
+    func serveCustomers(customer: Customer, group: DispatchGroup) {
+        self.isWorking = true
+        BankerMessage.printTaskText(customer: customer.waitingNumber, customerClass: customer.grade.description, customerTask: customer.task.description, state: .start)
+        queue.async(group: group) {
+            if customer.task == .loan {
+                self.performTask(task: .reviewDocument)
+                Headquarter.common.judgeLoan(customer: customer)
+                self.performTask(task: .excuteLoan)
+            } else {
+                usleep(customer.task.rawValue)
+            }
+            BankerMessage.printTaskText(customer: customer.waitingNumber, customerClass: customer.grade.description, customerTask: customer.task.description, state: .completion)
+            self.isWorking = false
+        }
+    }
+```
 
 ### - Thread의 sleep 대신 usleep을 사용했을 때의 이점이 있었나요?
 
