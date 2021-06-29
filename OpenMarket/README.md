@@ -115,7 +115,42 @@ struct ProductRegistration: Encodable {
 
 ```
 ## Trouble Shooting
-- 패스워드 컨테이너의 역할과 필요성? 
+- 서버와 통신하여 response를 retrun하여도 response가 담기지 않는 문제
+  > 해당 문제는 서버와 통신하는 방식이 비동기 방식으로 작동하기 때문에 URLSessionDataTask 부분의 코드가 완료되기 전에 retrun이 됨
+```swift
+    private func fetchData<T: Decodable>(url: URLRequest) -> T? {
+        var convertedData: T? = nil
+        URLSessionDataTask.default.dataTask(with: url) { (data, response, error)  in
+              convertedData = try? JSONDecoder().decode(T.self, from: data)
+         }.resume()
+         return convertedData
+      }
+ ```
+ 따라서 이 문제를 해결하기 위해 아래와 같이 escaping Clourse를 사용하여 해결하였습니다.
+ ```swift
+ private func fetchData<T: Decodable>(feature: FeatureList, url: URLRequest, completion: @escaping (Result<T,OpenMarketNetworkError>) -> Void) {
+        let dataTask: URLSessionDataTask = session
+            .dataTask(with: url) { (data, response, error)  in
+            
+                switch feature {
+                case .listSearch, .productSearch:
+                    do {
+                        let convertedData = try JSONDecoder().decode(T.self, from: receivedData)
+                        completion(.success(convertedData))
+                    } catch {
+                        completion(.failure(.decodingFailure))
+                    }
+                case .productRegistration:
+                    completion(.success(receivedData as! T))
+                case .deleteProduct(let id):
+                    break
+                case .productModification(let id):
+                    break
+                }
+            }
+        dataTask.resume()
+    }
+```
 - 특정기기에서 컬렉션 뷰의 가격을 표시하는 Text가 셀을 벗어나는 문제 [[해당 PR 링크]](https://github.com/yagom-academy/ios-open-market/pull/13#discussion_r570717025)
 > 해당 문제는 오토레이아웃 제약조건을 설정하지 않아서 발생하였습니다. 
 따라서 문제가 발생한 Label에 제약조건을 추가하여 해결하였습니다.
