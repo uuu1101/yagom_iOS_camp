@@ -116,7 +116,7 @@ struct ProductRegistration: Encodable {
 ```
 ## Trouble Shooting
 
-- 상품등록 (requestRegistration) 에 대한 POST 요청시, 단순히 HTTP Method를 POST로 설정한 후, 데이터를 전송할 경우 Content-Type 불일치 관련 에러가 발생
+- 상품등록 (requestRegistration) 에 대한 POST 요청시, 단순히 HTTP Method를 POST로 설정한 후, 데이터를 전송할 경우 Content-Type 불일치 관련 에러가 발생하는 문제
 
   > 서버 API에 따르면,<br> 전송하는 문서의 Content-Type (리소스의 media type 나타내는 부분) 은 multipart/form-data 이어야합니다. [(참조: MDN HTTP Header 관련 문서)](https://developer.mozilla.org/ko/docs/Web/HTTP/Headers/Content-Type)
   또한 multipart/form-data 타입의 문서를 POST 요청하는 Request Message 작성 시, 아래와 같은 메시지를 만들어서 요청해야합니다.  
@@ -211,7 +211,51 @@ productStockLabel.leadingAnchor.constraint(equalTo: productNameLabel.leadingAnch
 productStockLabel.trailingAnchor.constraint(equalTo: productNameLabel.trailingAnchor),
 ```
 ---
-- 테이블뷰에서 상품의 각각 이미지가 크기가 다르게 표시되는 문제 
+- 테이블뷰에서 상품의 각각 이미지가 크기가 다르게 표시되는 문제  
+ 
+|변경 전|변경 후|
+|------|---|
+|![2021-07-01_4 07 59](https://user-images.githubusercontent.com/49808034/124081506-9a0dca80-da86-11eb-843f-4c4b70bf268f.png)|![2021-07-01_4 10 48](https://user-images.githubusercontent.com/49808034/124082326-8dd63d00-da87-11eb-8c7b-b8c40cfe45e0.png)|
+
+ ```swift
+    private func setUpConstraints() {
+        self.contentView.addSubview(productNameLabel)
+        self.contentView.addSubview(productPriceLabel)
+        self.contentView.addSubview(productDiscountedPriceLabel)
+        self.contentView.addSubview(productStockLabel)
+        
+        NSLayoutConstraint.activate([
+            productThumbnailImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            productThumbnailImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            productThumbnailImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
+            productNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            productNameLabel.leadingAnchor.constraint(equalTo: productThumbnailImageView.trailingAnchor, constant: 10),
+            
+            productPriceLabel.topAnchor.constraint(equalTo: productNameLabel.bottomAnchor, constant: 5),
+            productPriceLabel.leadingAnchor.constraint(equalTo: productThumbnailImageView.trailingAnchor, constant: 5),
+            productPriceLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
+        
+            productDiscountedPriceLabel.topAnchor.constraint(equalTo: productPriceLabel.topAnchor),
+            productDiscountedPriceLabel.leadingAnchor.constraint(equalTo: productPriceLabel.trailingAnchor, constant: 5),
+            productDiscountedPriceLabel.bottomAnchor.constraint(equalTo: productPriceLabel.bottomAnchor),
+            
+            productStockLabel.topAnchor.constraint(equalTo: productNameLabel.topAnchor),
+            productStockLabel.leadingAnchor.constraint(equalTo: productNameLabel.trailingAnchor, constant: 5),
+            productStockLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            
+        ])
+    } 
+```
+> 위 코드에서 `productThumbnailImageView`의 width에 대한 제약이 없어서 `productThumbnailImageView`의 너비가 이미지에 따라서 변경되는 현상 발생
+이러한 문제를 해결하기 위해서 아래와 같이 `widthAnchor`에 대한 제약을 추가하였습니다.
+```swift
+        NSLayoutConstraint.activate([
+            productThumbnailImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            productThumbnailImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            productThumbnailImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.2),
+            productThumbnailImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+ ```
 
 ## 학습 내용
 
