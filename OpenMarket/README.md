@@ -115,6 +115,50 @@ struct ProductRegistration: Encodable {
 
 ```
 ## Trouble Shooting
+
+- 상품등록 (requestRegistration) 에 대한 POST 요청시, 단순히 HTTP Method를 POST로 설정한 후, 데이터를 전송할 경우 Content-Type 불일치 관련 에러가 발생
+
+  > 서버 API에 따르면,<br> 전송하는 문서의 Content-Type (리소스의 media type 나타내는 부분) 은 multipart/form-data 이어야합니다. [(참조: MDN HTTP Header 관련 문서)](https://developer.mozilla.org/ko/docs/Web/HTTP/Headers/Content-Type)
+  또한 multipart/form-data 타입의 문서를 POST 요청하는 Request Message 작성 시, 아래와 같은 메시지를 만들어서 요청해야합니다.  
+  <img src="https://user-images.githubusercontent.com/49808034/124079183-ca079e80-da83-11eb-9b75-131db107a34a.png" alt="drawing" width="550"/>
+
+  따라서 이 문제를 해결하기 위해, requestRegistration 메소드 내에 
+  ```swift
+    let boundary = "Boundary-\(UUID().uuidString)"
+    urlRequest.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+    let mimeType = "image/jpg"
+    let params = product.description 
+    urlRequest.httpBody = createBody(boundary: boundary, mimeType: mimeType, params: params, imageArray: product.images)
+  ```
+  > 요청메시지의 body 부분에 포함되어야하는 요소 (boundary, mimeType,전송데이터(product.description)) 등을 설정하여 createBody를 통해 urlRequest.httpBody를 생성하였습니다.
+
+  ```swift
+   private func createBody(boundary: String, mimeType: String, params: [String : Any?], imageArray: [Data]) -> Data {
+        var body = Data()
+        let boundaryPrefix = "--\(boundary)\r\n"
+        
+        for (key,value) in params {
+            if let convertedValue = value {
+                body.append(string: boundaryPrefix, encoding: .utf8)
+                body.append(string: "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n", encoding: .utf8)
+                body.append(string: "\(convertedValue)\r\n", encoding: .utf8)
+            }
+        }
+        
+        for (index,data) in imageArray.enumerated() {
+            body.append(string: boundaryPrefix, encoding: .utf8)
+            body.append(string: "Content-Disposition: form-data; name=\"images\"; filename=\"image\"\(index)\"\r\n", encoding: .utf8)
+            body.append(string: "Content-Type: \(mimeType)\r\n\r\n", encoding: .utf8)
+            body.append(data)
+            body.append(string: "\r\n", encoding: .utf8)
+        }
+        body.append(string: "--".appending(boundary.appending("--")), encoding: .utf8)
+        
+        return body
+    }
+  ```
+---
+
 - 서버와 통신하여 response를 retrun하여도 response가 담기지 않는 문제
   > 해당 문제는 서버와 통신하는 방식이 비동기 방식으로 작동하기 때문에 URLSessionDataTask 부분의 코드가 완료되기 전에 retrun이 됨
 ```swift
@@ -126,7 +170,7 @@ struct ProductRegistration: Encodable {
          return convertedData
       }
  ```
- 따라서 이 문제를 해결하기 위해 아래와 같이 escaping Clourse를 사용하여 해결하였습니다.
+ > 따라서 이 문제를 해결하기 위해 아래와 같이 escaping Clourse를 사용하여 해결하였습니다.
  ```swift
  private func fetchData<T: Decodable>(feature: FeatureList, url: URLRequest, completion: @escaping (Result<T,OpenMarketNetworkError>) -> Void) {
         let dataTask: URLSessionDataTask = session
@@ -151,6 +195,7 @@ struct ProductRegistration: Encodable {
         dataTask.resume()
     }
 ```
+---
 - 특정기기에서 컬렉션 뷰의 가격을 표시하는 Text가 셀을 벗어나는 문제 [[해당 PR 링크]](https://github.com/yagom-academy/ios-open-market/pull/13#discussion_r570717025)
 > 해당 문제는 오토레이아웃 제약조건을 설정하지 않아서 발생하였습니다. 
 따라서 문제가 발생한 Label에 제약조건을 추가하여 해결하였습니다.
@@ -165,7 +210,7 @@ productNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, 
 productStockLabel.leadingAnchor.constraint(equalTo: productNameLabel.leadingAnchor),
 productStockLabel.trailingAnchor.constraint(equalTo: productNameLabel.trailingAnchor),
 ```
-
+---
 - 테이블뷰에서 상품의 각각 이미지가 크기가 다르게 표시되는 문제 
 
 ## 학습 내용
