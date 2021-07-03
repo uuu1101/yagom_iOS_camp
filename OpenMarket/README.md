@@ -212,7 +212,7 @@ productStockLabel.trailingAnchor.constraint(equalTo: productNameLabel.trailingAn
 ```
 ---
 - 테이블뷰에서 상품의 각각 이미지가 크기가 다르게 표시되는 문제  
- 
+
 |변경 전|변경 후|
 |------|---|
 |![2021-07-01_4 07 59](https://user-images.githubusercontent.com/49808034/124081506-9a0dca80-da86-11eb-843f-4c4b70bf268f.png)|![2021-07-01_4 10 48](https://user-images.githubusercontent.com/49808034/124082326-8dd63d00-da87-11eb-8c7b-b8c40cfe45e0.png)|
@@ -256,6 +256,25 @@ productStockLabel.trailingAnchor.constraint(equalTo: productNameLabel.trailingAn
             productThumbnailImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.2),
             productThumbnailImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
  ```
+ ---
+- 테이블뷰 화면에서 스크롤을 하게 되면 상품가격 Label의 글자 색상과 취소선이 제멋대로 표시되는 현상 발생  
+
+
+|변경 전|변경 후|
+|------|---|
+|<img width="250" src="https://user-images.githubusercontent.com/49808034/124344762-54303e00-dc0f-11eb-85a7-2172cac5cf0f.gif">!|<img width="250" src="https://user-images.githubusercontent.com/49808034/124345073-6a3efe00-dc11-11eb-9557-8db58083f28f.gif">!|  
+
+이러한 현상은 셀을 컨테이너 벨트처럼 돌아가면서 재사용하기 때문에 나타나게 됩니다.
+
+```swift
+  override func prepareForReuse() {
+        productThumbnailImageView.image = nil
+        productStockLabel.textColor = .gray
+        productPriceLael.text = nil
+    }
+``` 
+
+위와 같이 `prepareForReuse()` 메서드를 사용하여 셀이 재사용 될 때 내용들을 초기화를 하여 해결하였습니다.
 
 ## 학습 내용
 
