@@ -85,5 +85,6 @@ class ProductListTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         productThumbnailImageView.image = nil
         productStockLabel.textColor = .gray
+        productPriceLael.text = nil
     }
 }
