@@ -264,7 +264,7 @@ productStockLabel.trailingAnchor.constraint(equalTo: productNameLabel.trailingAn
 |------|---|
 |<img width="250" src="https://user-images.githubusercontent.com/49808034/124344762-54303e00-dc0f-11eb-85a7-2172cac5cf0f.gif">!|<img width="250" src="https://user-images.githubusercontent.com/49808034/124345073-6a3efe00-dc11-11eb-9557-8db58083f28f.gif">!|  
 
-이러한 현상은 셀을 컨테이너 벨트처럼 돌아가면서 재사용하기 때문에 나타나게 됩니다.
+이러한 현상은 셀이 컨테이너 벨트처럼 돌아가면서 재사용하기 때문에 나타나게 됩니다.
 
 ```swift
   override func prepareForReuse() {
